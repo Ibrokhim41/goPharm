@@ -1,13 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #1C1C1E;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.fontS12 {
+    font-size: 12px;
+}
+.fontS15 {
+    font-size: 15px;
+}
+.fontS16 {
+    font-size: 16px;
+}
+.fontS18 {
+    font-size: 18px;
+}
+.fontS20 {
+    font-size: 20px;
+}
+.fontS24 {
+    font-size: 24px;
+}
+.fontS28 {
+    font-size: 28px;
+}
+.fontS50 {
+    font-size: 50px;
+}
+.fontW500 {
+    font-weight: 500;
+}
+.fontW700 {
+    font-weight: 700;
+}
+.fontW800 {
+    font-weight: 800;
+}
+.productImg {
+    width: 370px;
+    height: 370px;
+}
+.userCart {
+    width: 375px;
+    height: 206px;
+}
+
+.W370 {
+    width: 370px;
+}
+.H540 {
+    height: 540px;
+}
+.H900 {
+    height: 900px;
+}
+
+.h-min {
+    height: min-content;
+}
+
+select {
+    -webkit-appearance: none;
+}
+
+.custom {
+    transition: 0.4s;
 }
