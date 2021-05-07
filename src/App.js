@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Favorite from "./pages/Favorite";
 import NotFound from "./components/NotFound";
+import MapPage from "./pages/MapPage";
 
 function App() {
     return (
@@ -39,6 +40,9 @@ function App() {
                 </Route>
                 <Route path="/favorite">
                     <Favorite />
+                </Route>
+                <Route path="/map">
+                    <MapPage />
                 </Route>
                 <Route path="/404">
                     <NotFound />

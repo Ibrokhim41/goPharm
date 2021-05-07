@@ -57,7 +57,7 @@ const Home = () => {
                         <div className="rounded-full">
                             <img
                                 className="rounded-xl"
-                                src="https://api.gopharm.uz/media/sales/f368cd85-6935-4b40-a844-7fb2386ffc5e.png"
+                                src="https://api.gopharm.uz/media/sales/dde635fa-eaf6-4027-923c-7321e5a095e3.png"
                             ></img>
                         </div>
                         <div>

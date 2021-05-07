@@ -4,7 +4,7 @@ import searchIcon from "../../assets/search_icon.svg";
 import cartIcon from "../../assets/cart.svg";
 import userIcon from "../../assets/user.svg";
 import likeIcon from "../../assets/like.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderStiky from "../HeaderStiky";
 import { Link, useLocation } from 'react-router-dom';
 import logo from "../../assets/logo-sm.svg";
@@ -26,6 +26,10 @@ const Header = () => {
         setShowCatalog(false)
     })
 
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }, [useLocation().pathname])
+
     return (
         <>
             <HeaderStiky show={scrolled} bg={'white'} />
@@ -45,7 +49,7 @@ const Header = () => {
                             </button>
                             {showCatalog &&
                                 <div className="absolute top-full z-10" ref={ref}>
-                                    <Category />
+                                    <Category showCatalog={setShowCatalog}/>
                                 </div>}
                         </div>
                         {/* search */}
@@ -88,10 +92,10 @@ const Header = () => {
 
                     <div className="container mx-auto flex justify-between items-center py-5">
                         <Link to="/">
-                            <img className="mr-20" src={Logo} alt="icon"></img>
+                            <img className="w-44 mr-20" src={Logo} alt="icon"></img>
                         </Link>
                         {/* search */}
-                        <div className="flex flex-grow rounded-md bg-white py-3.5 px-5">
+                        <div className="flex flex-grow rounded-md bg-white py-2.5 px-5">
                             <input
                                 onChange={(e) => setSearch(e.target.value)}
                                 value={search}

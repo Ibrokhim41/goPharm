@@ -22,7 +22,7 @@
           function ({ addComponents }) {
               addComponents({
                   ".container": {
-                      width: "1140px",
+                      minWidth: "1140px",
                       maxWidth: "100%",
                       "@screen sm": {
                           maxWidth: "640px",

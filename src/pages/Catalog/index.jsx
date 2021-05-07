@@ -2,7 +2,7 @@ import Breadcrumbs from "../../components/Breadcrumbs"
 import sort from '../../assets/playlist_cached_36.svg'
 import chevronDown from '../../assets/icon.svg'
 import xIcon from '../../assets/x-icon.svg'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ProductCart from '../../components/ProductCart/index';
 import DefaultButton from "../../components/DefaultButton"
 

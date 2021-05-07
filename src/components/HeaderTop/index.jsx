@@ -7,9 +7,12 @@ import Modal from "../Modal";
 import { useState } from 'react';
 import DefaultButton from "../DefaultButton";
 import flagUz from '../../assets/uzb.png';
-import flagRu from '../../assets/globe.svg'
+import flagRu from '../../assets/globe.svg';
+import { useHistory } from 'react-router-dom';
 
 const HeaderTop = () => {
+
+    const router = useHistory()
 
     const items = [
         {
@@ -54,9 +57,9 @@ const HeaderTop = () => {
                 <div className="container mx-auto">
                     <div className="flex justify-between py-3.5">
                         <div className="flex text-cusGrey">
-                            <div className="mr-4">О компании</div>
-                            <div className="mr-4">Карта аптек</div>
-                            <div className="mr-4">Помощь</div>
+                            <div className="mr-4 cursor-pointer hover:text-primary">О компании</div>
+                            <div onClick={() => router.push('/map')} className="mr-4 cursor-pointer hover:text-primary">Карта аптек</div>
+                            <div className="mr-4 cursor-pointer hover:text-primary">Помощь</div>
                         </div>
                         <div className="flex">
                             <div onClick={() => setShowModal(true)}>

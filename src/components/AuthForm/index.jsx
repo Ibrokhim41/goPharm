@@ -29,6 +29,9 @@ const AuthForm = () => {
         tel && setText(`Проверочный код отправлен на номер`);
         setCounter(120)
     }
+    const normalizeCardNumber = (value) => {
+        // return value.replace(/\s/g, "").match(/.{1,2}/g).join(" ")
+    }
 
     return (
         <>

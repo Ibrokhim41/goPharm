@@ -23,7 +23,7 @@ const HeaderStiky = ({show, bgColor="white"}) =>   {
 
     return (
         <>
-            <div className={`bg-${bgColor} shadow-lg fixed w-full top-0 z-10 custom ${!show && '-top-full'}`}>
+            <div className={`bg-${bgColor} shadow-lg fixed w-full top-0 z-20 custom ${!show && '-top-full'}`}>
                 <div className="container mx-auto relative flex justify-between items-center py-5">
                     <div className="flex mr-7">
                         <Link to="/">

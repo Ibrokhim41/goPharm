@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import useOnclickOutside from "react-cool-onclickoutside";
 
 
-const Category = () => {
+const Category = ({showCatalog = null}) => {
 
     const titles = [
         {
@@ -138,6 +138,7 @@ const Category = () => {
                             {item.subTitle.map((title, i) => (
                                 <Link to="/catalog">
                                     <div
+                                        onClick={() => showCatalog && showCatalog(false)}
                                         className={`hover:bg-lightBlue cursor-pointer py-3`}>
                                         <p className="ml-4">{title}</p>
                                     </div>
