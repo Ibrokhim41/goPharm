@@ -11,9 +11,20 @@ import { Carousel } from "react-responsive-carousel";
 import Category from "../../components/Category";
 import ProductCart from '../../components/ProductCart'
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 
 const Home = () => {
+
+    const [drugs, setDrugs] = useState([])
+
+
+    useEffect(() => {
+        fetch('https://test.gopharm.uz/api/v1/drugs')
+            .then(response => response.json())
+            .then(data => setDrugs(data.results))
+    }, [])
+
 
     const items = [
         {
@@ -102,9 +113,11 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-4 gap-7">
-                    <div className="col-span-1">
-                        <ProductCart />
-                    </div>
+                    {drugs.length && drugs.map((item) => (
+                        <div className="col-span-1" key={item.id}>
+                            <ProductCart name={item.name} image={item.image} slug={item.slug} price={item.price} />
+                        </div>
+                    ))}
                 </div>
             </div>
             {/* app */}

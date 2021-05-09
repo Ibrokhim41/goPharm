@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import Category from "../Category";
 import useOnclickOutside from "react-cool-onclickoutside";
 
-
 const HeaderStiky = ({show, bgColor="white"}) =>   {
 
     const [authed, setAuthed] = useState(false);

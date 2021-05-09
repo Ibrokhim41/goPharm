@@ -1,13 +1,18 @@
 
 
-const DefaultInput = ({ placeholder, customClass, val, func }) => {
+const DefaultInput = ({ placeholder, customClass, val, onChange, onBlur, onFocus }) => {
+
+    onChange = onChange ? onChange : () => { };
+    onBlur = onBlur ? onBlur : () => { };
+    onFocus = onFocus ? onFocus : () => { };
 
     return (
         <>
             <input
-                onFocus={() => func()}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onChange={onChange}
                 value={val}
-                onChange={(e) => func(val = e.target.value)}
                 className={`${customClass} py-2.5 border-2 border-borderCol rounded-md bg-bgGrey focus:outline-none fontS15 text-cusGrey w-80`} placeholder={placeholder} type="tel" />
         </>
     )

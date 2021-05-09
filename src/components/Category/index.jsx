@@ -120,9 +120,13 @@ const Category = ({showCatalog = null}) => {
                 {titles.map((item, i) => (
                     <>
                         <div
-                            onClick={() => {
+                            onClick={() => setShowSubCat(true)}
+                            onMouseEnter={() => {
                                 setShowSubCatId(i)
                                 setShowSubCat(true)
+                            }}
+                            onMouseLeave={() => {
+                                setShowSubCat(false)
                             }}
                             key={i}
                             className="w-full flex items-center justify-between py-3 hover:bg-lightBlue cursor-pointer">
@@ -132,7 +136,9 @@ const Category = ({showCatalog = null}) => {
                             </div>
                             <img className="pr-4" src={arrowIcon} alt="icon"></img>
                         </div>
-                        <div 
+                        <div
+                            onMouseEnter={() => setShowSubCat(true)}
+                            onMouseLeave={() => setShowSubCat(false)}
                             ref={ref}
                             className={`absolute top-0 -right-full bg-white w-full h-full z-10 border-l-2 border-borderCol overflow-y-scroll ${showSubCat && showSubCatId === i ? '' : 'hidden'}`}>
                             {item.subTitle.map((title, i) => (
