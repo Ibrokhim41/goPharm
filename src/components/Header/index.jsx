@@ -10,11 +10,18 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from "../../assets/logo-sm.svg";
 import Category from "../Category";
 import useOnclickOutside from "react-cool-onclickoutside";
+import Search from "../Search";
+import axios from "axios";
+import { API_URL } from "../../redux/types";
+
+// https://test.gopharm.uz/api/v1/drugs?search=parastamol&region=1&lan=ru
 
 const Header = () => {
 
+
     const [authed, setAuthed] = useState(false);
     const [search, setSearch] = useState("");
+    const [searchResult, setSearchResult] = useState([])
     const [scrolled, setScrolled] = useState(false);
     const [showCatalog, setShowCatalog] = useState(false);
     const ref = useOnclickOutside(() => {
@@ -22,12 +29,19 @@ const Header = () => {
     });
 
     window.addEventListener("scroll", () => {
-        window.scrollY > 150 ? setScrolled(true) : setScrolled(false)
+        window.scrollY > 100 ? setScrolled(true) : setScrolled(false)
         setShowCatalog(false)
+        setSearch("")
     })
 
+    const fetchSearch = async () => {
+        await axios.get(`${API_URL}/drugs?search=${search}&region=1&lan=ru`)
+            .then(response => console.log(response.data.results))
+        console.log(searchResult)
+    }
+
     useEffect(() => {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
     }, [useLocation().pathname])
 
     return (
@@ -49,13 +63,16 @@ const Header = () => {
                             </button>
                             {showCatalog &&
                                 <div className="absolute top-full z-10" ref={ref}>
-                                    <Category showCatalog={setShowCatalog}/>
+                                    <Category showCatalog={setShowCatalog} />
                                 </div>}
                         </div>
                         {/* search */}
-                        <div className="flex flex-grow rounded-md bg-white py-2.5 px-5 border border-primary">
+                        <div className="relative flex flex-grow rounded-md bg-white py-2.5 px-5 border border-primary">
+                            {search}
                             <input
                                 onChange={(e) => setSearch(e.target.value)}
+                                    // fetchSearch()
+                                    // setSearch(e.target.value);
                                 value={search}
                                 placeholder="Поиск лекарств"
                                 className="w-full focus:outline-none text-cusGrey"
@@ -64,7 +81,11 @@ const Header = () => {
                                 onClick={() => setSearch("")}
                                 className="cursor-pointer"
                                 src={searchIcon}
-                                alt="icon"></img>
+                                alt="icon">
+                            </img>
+                            <div className={!search ? 'hidden' : '' }>
+                                <Search drugs={searchResult}/>
+                            </div>
                         </div>
                         {/* userNav */}
                         <div className="flex">

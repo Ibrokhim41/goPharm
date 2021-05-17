@@ -1,3 +1,11 @@
+import { Link, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { fetchSales } from '../../redux/actions';
+import { useEffect } from "react";
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Autoplay } from "swiper"
+import "swiper/swiper.min.css";
+import "swiper/components/pagination/pagination.min.css"
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import trustIcon from '../../assets/trust.svg'
 import delivertIcon from '../../assets/delivery.svg'
@@ -10,20 +18,19 @@ import mobileImg from '../../assets/Frame 3987.png'
 import { Carousel } from "react-responsive-carousel";
 import Category from "../../components/Category";
 import ProductCart from '../../components/ProductCart'
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 
-const Home = () => {
+SwiperCore.use([Autoplay]);
 
-    const [drugs, setDrugs] = useState([])
 
+const Home = ({ drugs, fetchSales, }) => {
+
+    const history = useHistory()
 
     useEffect(() => {
-        fetch('https://test.gopharm.uz/api/v1/drugs')
-            .then(response => response.json())
-            .then(data => setDrugs(data.results))
+        fetchSales()
     }, [])
+
 
 
     const items = [
@@ -93,8 +100,8 @@ const Home = () => {
                         <p>Почему стоит заказывать лекарства у нас?</p>
                     </div>
                     <div className="grid grid-cols-4 mt-11">
-                        {items.map((item) => (
-                            <div className="col-span-1 flex flex-col items-center">
+                        {items.map((item,i) => (
+                            <div className="col-span-1 flex flex-col items-center" key={i}>
                                 <img className="w-16 h-16" src={item.icon}></img>
                                 <div className="py-1 fontS18 fontW700">{item.title}</div>
                                 <div className="text-center fontS15 text-cusGrey">{item.text}</div>
@@ -112,13 +119,22 @@ const Home = () => {
                         <img className="w-3" src={arrow} alt="" />
                     </div>
                 </div>
-                <div className="grid grid-cols-4 gap-7">
-                    {drugs.length && drugs.map((item) => (
-                        <div className="col-span-1" key={item.id}>
-                            <ProductCart name={item.name} image={item.image} slug={item.slug} price={item.price} />
-                        </div>
-                    ))}
-                </div>
+                {/* swiper */}
+                <Swiper slidesPerView={4} spaceBetween={30} freeMode={true} showArrows={true} loop={true} autoplay={{
+                    delay: 2000
+                }}>
+                    <div className="grid grid-cols-4">
+                        {drugs.length && drugs.map((item) => (
+                            <div className="col-span-1" key={item.id}>
+                                <SwiperSlide>
+                                    <div className="py-1">
+                                        <ProductCart name={item.name} image={item.image} slug={item.slug} price={item.price} />
+                                    </div>
+                                </SwiperSlide>
+                            </div>
+                        ))}
+                    </div>
+                </Swiper>
             </div>
             {/* app */}
             <div className="bg-lightBlue">
@@ -139,9 +155,25 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+                <div 
+                    className="bg-lightRed"
+                    onClick={() => history.push(`/map/${'sokol'}`)}
+                >
+                    click
+                </div>
             </div>
         </>
     )
 }
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        drugs: state.drugs.sales,
+    }
+}
+
+const mapDispatchToProps = {
+    fetchSales,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

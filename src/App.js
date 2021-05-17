@@ -17,15 +17,11 @@ function App() {
         <Router>
             <Header />
             <Switch>
-                <Route exact path="/">
-                    <Home />
-                </Route>
-                <Route path="/product">
+                <Route exact path="/" component={Home} />
+                <Route path="/product/:drugSlug">
                     <Product />
                 </Route>
-                <Route path="/catalog">
-                    <Catalog />
-                </Route>
+                <Route path="/catalog/:catalog" component={Catalog} />
                 <Route path="/auth">
                     <Auth />
                 </Route>
@@ -41,9 +37,7 @@ function App() {
                 <Route path="/favorite">
                     <Favorite />
                 </Route>
-                <Route path="/map">
-                    <MapPage />
-                </Route>
+                <Route path="/map/:map" component={MapPage} />
                 <Route path="/404">
                     <NotFound />
                 </Route>

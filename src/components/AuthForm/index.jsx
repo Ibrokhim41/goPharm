@@ -2,6 +2,8 @@ import DefaultInput from '../DefaultInput/index';
 import DefaultButton from '../DefaultButton/index';
 import { useEffect, useState } from 'react';
 import useOnclickOutside from "react-cool-onclickoutside";
+import axios  from 'axios';
+import { API_URL } from '../../redux/types';
 
 
 const AuthForm = () => {
@@ -25,9 +27,15 @@ const AuthForm = () => {
         return () => clearInterval(interval);
     }, [counter]);
 
-    const authUser = () => {
+    const authUser = async () => {
+        await axios.post(`${API_URL}/register?region=1&lan=ru`, { login: Number(tel) }).then(response => console.log(response))
         tel && setText(`Проверочный код отправлен на номер`);
         setCounter(120)
+    }
+
+    const confirmSms = async () => {
+        await axios.post(`${API_URL}/accept?region=1&lan=ru`, { login: Number(tel), smscode: Number(confirm) }).then(response => console.log(response))
+
     }
 
 
@@ -44,7 +52,7 @@ const AuthForm = () => {
                         <input
                             onFocus={() => setTel('+998')}  
                             onBlur={() => setTel('')}
-                            onChange={(e) => tel.length !== 11 && setTel(e.target.value)}
+                            onChange={(e) => tel.length !== 13 && setTel(e.target.value)}
                             placeholder="Введите номер телефона"
                             className="py-2.5 border-2 border-borderCol rounded-md bg-bgGrey focus:outline-none fontS15 text-cusGrey W370 px-4" type="tel" 
                             value={tel}
@@ -63,7 +71,7 @@ const AuthForm = () => {
                         </div>
                     }
                     <DefaultButton
-                        onClick={authUser}
+                        onClick={confirm === null ? authUser : confirmSms}
                         text={counter ? 'Подтвердить' : `Получить код активации`}
                         customClass="W370 mt-6 bg-primary text-white" />
 

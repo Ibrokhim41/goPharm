@@ -14,7 +14,10 @@ const HeaderStiky = ({show, bgColor="white"}) =>   {
     const [search, setSearch] = useState("");
     const [showCatalog, setShowCatalog] = useState(false);
 
-    window.addEventListener("scroll", () => setShowCatalog(false))
+    window.addEventListener("scroll", () => {
+        setShowCatalog(false)
+        setSearch("")
+    })
     
     const ref = useOnclickOutside(() => {
         setShowCatalog(false);

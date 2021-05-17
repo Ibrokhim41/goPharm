@@ -5,29 +5,85 @@ import xIcon from '../../assets/x-icon.svg'
 import { useEffect, useState } from "react"
 import ProductCart from '../../components/ProductCart/index';
 import DefaultButton from "../../components/DefaultButton"
+import axios from "axios"
+import { API_URL } from "../../redux/types"
+import { useParams } from "react-router"
 
 const Catalog = () => {
 
+    const { catalog } = useParams();
+    const [drugsByCategory, setDrugsByCategory] = useState([])
+    const [nameFromTo, setNameFromTo] = useState(true)
+    const [priceFromTo, setPriceFromTo] = useState(true)
+    
     const [showHide, setShowHide] = useState(false)
+
+    const fetchDrugs = async () => {
+        await axios.get(`${API_URL}/drugs?page=1&category_slug=${catalog}&region=1&lan=ru`)
+            .then(response => setDrugsByCategory(response.data.results))
+    }
+    useEffect(() => {
+        fetchDrugs()
+    }, [catalog])
+
+    const sortPrice = () => {
+        if (priceFromTo) {
+            const sorted = drugsByCategory.sort((a,b) => {
+                return parseFloat(a.price) - parseFloat(b.price)
+            });
+            setDrugsByCategory(sorted.slice())
+        } else {
+            const sorted = drugsByCategory.sort((a, b) => {
+                return parseFloat(b.price) - parseFloat(a.price)
+            });
+            setDrugsByCategory(sorted.slice())
+        }
+        setPriceFromTo(!priceFromTo)
+    }
+
+    const sortName = () => {
+        if(nameFromTo) {
+            const sorted = drugsByCategory.sort((a, b) => {
+                if (a.name < b.name) { return -1; }
+                if (a.name > b.name) { return 1; }
+                return 0;
+            })
+            setDrugsByCategory(sorted.slice())
+        }
+        else {
+            const sorted = drugsByCategory.sort((a, b) => {
+                if (b.name < a.name) { return -1; }
+                if (b.name > a.name) { return 1; }
+                return 0;
+            })
+            setDrugsByCategory(sorted.slice())
+        }
+        setNameFromTo(!nameFromTo)
+    }
+
 
     return (
         <>
             <div className="container mx-auto py-8">
                 <Breadcrumbs />
                 <div className="flex justify-between mt-7">
-                    <div className="fontS24 fontW500">Для женщин</div>
+                    <div className="fontS24 fontW500">{drugsByCategory.length ? drugsByCategory[0].category.name : null}</div>
                     <div className="flex items-center">
                         <img className="w-6" src={sort} alt="sort" />
                         <div className="fontS16 ml-3.5">Сортировать по:</div>
-                        <div className="fontS15 ml-6 cursor-pointer hover:text-primary">Названию</div>
-                        <div className="fontS15 ml-6 cursor-pointer hover:text-primary">Цене</div>
-                        <div className="fontS15 ml-6 cursor-pointer hover:text-primary">Наличии скидки</div>
+                        <div 
+                            onClick={sortName}
+                            className="fontS15 ml-6 cursor-pointer hover:text-primary">Названию</div>
+                        <div 
+                            onClick={sortPrice}
+                            className="fontS15 ml-6 cursor-pointer hover:text-primary">Цене</div>
+                        {/* <div className="fontS15 ml-6 cursor-pointer hover:text-primary">Наличии скидки</div> */}
                     </div>
                 </div>
                 {/*  */}
-                <div className="grid grid-cols-4 pt-7">
+                <div className="grid grid-cols-4 pt-7 relative">
                     {/* filter */}
-                    <div className="col-span-1 mr-8">
+                    <div className="col-span-1 mr-8 sticky top-24">
                         <div className="fontS16">Цена (сум)</div>
                         <div className="grid grid-cols-2 gap-4 mt-5">
                             <input
@@ -64,12 +120,16 @@ const Catalog = () => {
                     {/*  */}
                     <div className="col-span-3">
                         <div className="grid grid-cols-3 gap-4">
-                            <ProductCart />
-                            <ProductCart />
-                            <ProductCart />
+                            {drugsByCategory.length ? drugsByCategory.map(item => (
+                                <ProductCart name={item.name} image={item.image} slug={item.slug} price={item.price} key={item.id} />
+                            )) : 
+                                <div>No Items</div>}
                         </div>
                         <div className="mt-14 flex justify-center">
-                            <DefaultButton text="Загрузить больше" customClass="bg-lightBlue text-primary fontS16 fontW500 px-14" />
+                            <DefaultButton
+                                onClick={() => { }}
+                                text="Загрузить больше"
+                                customClass="bg-lightBlue text-primary fontS16 fontW500 px-14" />
                         </div>
                     </div>
                 </div>

@@ -22,7 +22,6 @@
           function ({ addComponents }) {
               addComponents({
                   ".container": {
-                      minWidth: "1140px",
                       maxWidth: "100%",
                       "@screen sm": {
                           maxWidth: "640px",
@@ -31,10 +30,10 @@
                           maxWidth: "768px",
                       },
                       "@screen lg": {
-                          maxWidth: "1280px",
+                          maxWidth: "930px",
                       },
                       "@screen xl": {
-                          maxWidth: "1400px",
+                          maxWidth: "1110px",
                       },
                   },
               });

@@ -1,11 +1,29 @@
 import cartIcon from '../../assets/shopping_cart_16.svg';
 import Arrow from '../../assets/Arrow.svg';
-import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
 import SmilarProducts from '../../components/SimilarProducts';
 import Breadcrumbs from '../../components/Breadcrumbs';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { API_URL} from '../../redux/types';
+import { useSelector } from 'react-redux';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 const Product = () => {
+
+    const { drugSlug} = useParams()
+
+    const drug = useSelector(state => state.drugs.name)
+    const [drugs, setDrugs] = useState([])
+    const history = useHistory()
+    const location = useLocation()
+
+    useEffect(async () => {
+        await axios.get(`${API_URL}/drug/${drugSlug}?is_publish=true&region=1&lan=ru`).
+            then(response => {
+                setDrugs(response.data)
+            })
+    }, [])
 
     return (
         <>
@@ -13,12 +31,12 @@ const Product = () => {
                 <Breadcrumbs />
                 {/* Product main details */}
                 <div className="flex pt-12 pb-8 gap-5">
-                    <img className="rounded-md productImg object-contain" src="https://www.al-agzakhana.com/wp-content/uploads/2018/11/Trimol.jpg" alt="" />
+                    <img className="rounded-md productImg object-contain" src={drugs.image} alt="" />
                     <div>
-                        <div className="fontS24 fontW500">АЙФЛОКС cтерильно глазные капли 0,3% 5 мл</div>
-                        <div className="pt-4 pb-6 text-primary">Aseptica, ООО</div>
-                        <div className="fontS24 fontW700">120 000 сум</div>
-                        <Rate value={3.5} allowHalf={true} />
+                        <div className="fontS24 fontW500">{drugs.name}</div>
+                        {/* <div className="pt-4 pb-6 text-primary">{drugs.manufacturer.name}</div> */}
+                        <div className="fontS24 fontW700">от {drugs.price} сум</div>
+                        {/* <Rate value={3.5} allowHalf={true} /> */}
                         <div className="py-6 fontW500 fontS18">Описание</div>
                         <div className="flex">
                             <div className="mr-10">
@@ -74,5 +92,5 @@ const Product = () => {
     )
 }
 
-export default Product;
+export default Product
 

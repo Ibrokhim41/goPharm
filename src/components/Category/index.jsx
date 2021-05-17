@@ -1,108 +1,23 @@
 import arrowIcon from '../../assets/arrow_right.svg'
-import fireIcon from '../../assets/fire_icon.svg'
-import pillIcon from '../../assets/pill.svg'
-import fitoIcon from '../../assets/beauty.svg'
-import weddingIcon from '../../assets/wedding.svg'
-import babyIcon from '../../assets/baby.svg'
-import medIcon from '../../assets/med.svg'
-import medItemIcon from '../../assets/medItem.svg'
-import soapIcon from '../../assets/soap.svg'
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import useOnclickOutside from "react-cool-onclickoutside";
+import { connect } from 'react-redux'
+import { fetchCategory, fetchDrugsByCategory, getCategorySlug } from '../../redux/actions';
 
+const Category = ({ showCatalog = null, categories, fetchCategory, fetchDrugsByCategory}) => {
 
-const Category = ({showCatalog = null}) => {
+    useEffect(() => {
+        console.log(categories);
+        fetchCategory()
+    }, [])
 
-    const titles = [
-        {
-            title: "Самое актуальное",
-            icon: fireIcon,
-            subTitle: [
-                'Моновитамины',
-                "Мультивитамины",
-                "Для беременных и кормящих",
-            ]
-        },
-        {
-            title: "Лекарственные препараты",
-            icon: pillIcon,
-            subTitle: [
-                'Моновитамины',
-                "Мультиви546тамины",
-                "Для беременных и кормящих",
-            ]
-        },
-        {
-            title: "Фитопрепараты",
-            icon: fitoIcon,
-            subTitle: [
-                'Моновитамины',
-                "Мультивитамины",
-                "Для беремkljl;енных и кормящих"
-            ]
-        },
-        {
-            title: "Планирование семьи",
-            icon: weddingIcon,
-            subTitle: [
-                'Моновитамины',
-                "Мультивитамины",
-                "Для берzxcvzxcеменных и кормящих"
-            ]
-        },
-        {
-            title: "Мама и малыш",
-            icon: babyIcon,
-            subTitle: [
-                'Моновитамины',
-                "Мульadfadfadfтивитамины",
-                "Для беременных и кормящих"
-            ]
-        },
-        {
-            title: "Медицинские изделия",
-            icon: medIcon,
-            subTitle: [
-                'Моновитаминqerqerы',
-                "Мультивитамины",
-                "Для беременных и кормящих"
-            ]
-        },
-        {
-            title: "Приборы медицинские",
-            icon: medItemIcon,
-            subTitle: [
-                'Моновитаминыewqrwerqq',
-                "Мультивитамины",
-                "Для беременных и кормящих",
-                'Моновитаминыewqrwerqq',
-                "Мультивитамины",
-                "Для беременных и кормящих",
-                'Моновитаминыewqrwerqq',
-                "Мультивитамины",
-                "Для беременных и кормящих",
-                'Моновитаминыewqrwerqq',
-                "Мультивитамины",
-                "Для беременных и кормящих",
-                'Моновитаминыewqrwerqq',
-                "Мультивитамины",
-                "Для беременных и кормящих",
-            ]
-        },
-        {
-            title: "Гигиена, красота и уход",
-            icon: soapIcon,
-            subTitle: [
-                'Моновитамины1',
-                "Мультивитамины2",
-                "Для беременных и кормящих3",
-            ]
-        },
-    ];
+    const history = useHistory()
 
     const [showSubCatId, setShowSubCatId] = useState(0);
     const [showSubCat, setShowSubCat] = useState(false);
+
+    const route = useHistory()
     
 
     const ref = useOnclickOutside(() => {
@@ -116,11 +31,14 @@ const Category = ({showCatalog = null}) => {
 
     return (
         <>
-            <div className="relative w-full shadow-md fontS16 bg-white">
-                {titles.map((item, i) => (
+            <div className={`relative w-full shadow-md fontS16 bg-white`}>
+                {categories.length ? categories.map((item, i) => (
                     <>
                         <div
-                            onClick={() => setShowSubCat(true)}
+                            onClick={() => {
+                                fetchDrugsByCategory(item.slug)
+                                route.push('/catalog')
+                            }}
                             onMouseEnter={() => {
                                 setShowSubCatId(i)
                                 setShowSubCat(true)
@@ -128,35 +46,52 @@ const Category = ({showCatalog = null}) => {
                             onMouseLeave={() => {
                                 setShowSubCat(false)
                             }}
-                            key={i}
+                            key={item.id}
                             className="w-full flex items-center justify-between py-3 hover:bg-lightBlue cursor-pointer">
                             <div className="flex items-center px-4">
-                                <img src={item.icon} alt="icon"></img>
-                                <p className="ml-4">{item.title}</p>
+                                <img className="w-11 object-contain" src={item.image} alt="icon"></img>
+                                <p className="ml-4">{item.name}</p>
                             </div>
-                            <img className="pr-4" src={arrowIcon} alt="icon"></img>
+                            {item.childs.length ? <img className="pr-4" src={arrowIcon} alt="icon"></img> : null}
                         </div>
                         <div
                             onMouseEnter={() => setShowSubCat(true)}
                             onMouseLeave={() => setShowSubCat(false)}
                             ref={ref}
-                            className={`absolute top-0 -right-full bg-white w-full h-full z-10 border-l-2 border-borderCol overflow-y-scroll ${showSubCat && showSubCatId === i ? '' : 'hidden'}`}>
-                            {item.subTitle.map((title, i) => (
-                                <Link to="/catalog">
+                            className={`${item.childs.length ? '' : 'hidden'} absolute top-0 -right-full bg-white w-full h-full z-10 border-l-2 border-borderCol overflow-y-scroll ${showSubCat && showSubCatId === i ? '' : 'hidden'}`}>
+                            {item.childs.length ? item.childs.map((item, i) => (
+                                // <Link to="/catalog">
                                     <div
-                                        onClick={() => showCatalog && showCatalog(false)}
+                                        key={item.id}
+                                        onClick={() => {
+                                            history.push(`/catalog/${item.slug}`)
+                                            // showCatalog && showCatalog(false)
+                                            // getCategorySlug(item.slug)
+                                        }}
                                         className={`hover:bg-lightBlue cursor-pointer py-3`}>
-                                        <p className="ml-4">{title}</p>
+                                        <p className="ml-4">{item.name}</p>
                                     </div>
-                                </Link>
-                            ))}
+                                // </Link>
+                            )) : null }
                         </div>
                     </>
-                ))}
+                )): null }
             </div>
         </>
     );
 }
 
 
-export default Category;
+const mapStateToProps = state => {
+    return {
+        categories: state.categories.category
+    }
+}
+
+const mapDispatchToProps = {
+    fetchCategory,
+    fetchDrugsByCategory,
+    getCategorySlug,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
