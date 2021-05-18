@@ -116,6 +116,9 @@ const Catalog = () => {
     const [unitShow, setUnitShow] = useState(false)
     const [manufacturerShow, setMaufacturerShow] = useState(false)
     const [selectedIN, setSelectedIN] = useState([])
+    const [selectedMF, setSelectedMF] = useState([])
+    const [selectedUnit, setSelectedUnit] = useState([])
+    const [clearInputs, setClearInputs] = useState(false)
 
     const filterPrice = () => {
         const sorted = drugsByCategory.filter(item => minPrice < item.price && item.price < maxPrice)
@@ -131,6 +134,26 @@ const Catalog = () => {
             setSelectedIN(selectedIN.concat([name]))
             :
             setSelectedIN(selectedIN.filter(item => item !== name).slice())
+    }
+    const filterManF = () => {
+        const sorted = drugsByCategory.filter(item => selectedMF.includes(item.manufacturer.name))
+        selectedMF.length && setDrugsByCategory(sorted.slice())
+    }
+    const MFArr = (e, name) => {
+        e.target.checked ?
+            setSelectedMF(selectedMF.concat([name]))
+            :
+            setSelectedMF(selectedMF.filter(item => item !== name).slice())
+    }
+    const filterUnit = () => {
+        const sorted = drugsByCategory.filter(item => selectedUnit.includes(item.unit.name))
+        selectedUnit.length && setDrugsByCategory(sorted.slice())
+    }
+    const unitArr = (e, name) => {
+        e.target.checked ?
+            setSelectedUnit(selectedUnit.concat([name]))
+            :
+            setSelectedUnit(selectedUnit.filter(item => item !== name).slice())
     }
 
     const INToggle = () => {
@@ -149,9 +172,12 @@ const Catalog = () => {
         setDrugsByCategory(drugs)
         filterPrice()
         filterIN()
+        filterManF()
+        filterUnit()
     }
     const clearFilter = () => {
         setDrugsByCategory(drugs)
+        setClearInputs(true)
     }
 
     return (
@@ -185,7 +211,9 @@ const Catalog = () => {
                         <div className="fontS16">Цена (сум)</div>
                         <div className="grid grid-cols-2 gap-4 mt-5">
                             <input
-                                onChange={(e) => setMinPrice(e.target.value)}
+                                onChange={(e) => {
+                                    setMinPrice(e.target.value)
+                                }}
                                 value={minPrice}
                                 type="number"
                                 placeholder="от"
@@ -208,7 +236,9 @@ const Catalog = () => {
                                 {internationalNames.length ? internationalNames.map((name) => (
                                     <div className="flex items-center mt-6">
                                         <input
-                                            onChange={(e) => INArr(e, name.name)}
+                                            onChange={(e) => {
+                                                INArr(e, name.name)
+                                            }}
                                             id={name.id}
                                             className="min-w-4 h-4 cursor-pointer"
                                             type="checkbox" />
@@ -230,7 +260,9 @@ const Catalog = () => {
                             <div className={`${manufacturerShow ? 'h-full' : 'h-0'} overflow-hidden`}>
                                 {manufacturer.length ? manufacturer.map((name) => (
                                     <div className="flex items-center mt-6">
-                                        <input id={name.id} className="min-w-4 h-4 cursor-pointer" type="checkbox" />
+                                        <input 
+                                            onChange={(e) => MFArr(e, name.name)}
+                                            id={name.id} className="min-w-4 h-4 cursor-pointer" type="checkbox" />
                                         <label for={name.id} className="fontS15 ml-3 cursor-pointer">{name.name}</label>
                                     </div>
                                 )) : null}
@@ -249,7 +281,9 @@ const Catalog = () => {
                             <div className={`${unitShow ? 'h-full' : 'h-0'} overflow-hidden`}>
                                 {units.length ? units.map((name) => (
                                     <div className="flex items-center mt-6">
-                                        <input id={name.id} className="min-w-4 h-4 cursor-pointer" type="checkbox" />
+                                        <input 
+                                            onChange={e => unitArr(e, name.name)}
+                                            id={name.id} className="min-w-4 h-4 cursor-pointer" type="checkbox" />
                                         <label for={name.id} className="fontS15 ml-3 cursor-pointer">{name.name}</label>
                                     </div>
                                 )) : null}
