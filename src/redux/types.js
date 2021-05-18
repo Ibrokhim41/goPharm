@@ -1,5 +1,4 @@
-export const API_URL = "https://test.gopharm.uz/api/v1"
-export const FETCH_DRUGS = "DRUGS/FETCH_DRUGS"
+export const API_URL = "https://api.gopharm.uz/api/v1"
 export const FETCH_CATEGORY = "DRUGS/FETCH_CATEGORY"
 export const FETCH_SALES = "DRUGS/FETCH_SALES"
 export const FETCH_DRUGS_BY_CATEGORY = "CATALOG/FETCH_DRUGS_BY_CATEGORY"

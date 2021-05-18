@@ -3,13 +3,6 @@ import { FETCH_CATEGORY, FETCH_DRUGS, FETCH_SALES, FETCH_DRUGS_BY_CATEGORY, GET_
 
 const apiUrl = "https://test.gopharm.uz/api/v1";
 
-export function fetchDrugs() {
-    return async (dispatch) => {
-        const response = await axios.get(`${apiUrl}/drugs`);
-        dispatch({ type: FETCH_DRUGS, payload: response.data.results });
-    };
-}
-
 export function fetchDrugsByCategory(slug) {
     return async (dispatch) => {
         const response = await axios.get(`${apiUrl}/drugs?page=1&category_slug=${slug}`)

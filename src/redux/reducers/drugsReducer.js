@@ -10,8 +10,6 @@ const initialState = {
 
 export const drugsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_DRUGS:
-            return { ...state, allDrugs: action.payload };
         case FETCH_SALES:
             return { ...state, sales: action.payload };
         case FETCH_DRUGS_BY_CATEGORY:
