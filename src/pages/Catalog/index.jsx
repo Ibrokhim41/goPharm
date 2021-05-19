@@ -123,11 +123,10 @@ const Catalog = () => {
     const filterPrice = () => {
         const sorted = drugsByCategory.filter(item => minPrice < item.price && item.price < maxPrice)
         minPrice !== null && maxPrice !== 0 && setDrugsByCategory(sorted.slice())
-        console.log(drugsByCategory);
     }
     const filterIN = () => {
         const sorted = drugsByCategory.filter(item => selectedIN.includes(item.international_name.name))
-        selectedIN.length && setDrugsByCategory(sorted.slice())
+        setDrugsByCategory(sorted.slice())
     }
     const INArr = (e, name) => {
         e.target.checked ?

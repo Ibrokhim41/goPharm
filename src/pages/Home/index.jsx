@@ -155,12 +155,6 @@ const Home = ({ drugs, fetchSales, }) => {
                         </div>
                     </div>
                 </div>
-                <div 
-                    className="bg-lightRed"
-                    onClick={() => history.push(`/map/${'sokol'}`)}
-                >
-                    click
-                </div>
             </div>
         </>
     )

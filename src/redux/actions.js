@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_CATEGORY, FETCH_DRUGS, FETCH_SALES, FETCH_DRUGS_BY_CATEGORY, GET_CATEGORY_SLUG, FETCH_DRUG } from "./types";
+import { FETCH_CATEGORY, FETCH_DRUGS, FETCH_SALES, FETCH_DRUGS_BY_CATEGORY, GET_CATEGORY_SLUG, FETCH_DRUG, USER_LOGIN } from "./types";
 
 const apiUrl = "https://test.gopharm.uz/api/v1";
 
@@ -36,5 +36,15 @@ export function fetchDrug(value) {
     return async dispatch => {
         const response = await axios.get(`${apiUrl}/drug/${value}?is_publish=true&region=1&lan=ru`).then(response => response.data)
         dispatch({type: FETCH_DRUG, payload: response})
+    }
+}
+
+
+// registratoin
+
+export function userLogin(tel, confirm) {
+    return async dispatch => {
+        const response = await axios.post(`${apiUrl}/accept?region=1&lan=ru`, { login: Number(tel), smscode: Number(confirm) }).then(response => console.log(response))
+        dispatch({type: USER_LOGIN, payload: response})
     }
 }
